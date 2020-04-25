@@ -1,11 +1,11 @@
 
-pipeline {
-    agent { docker { image 'maven:3.3.3' } }
-    stages {
-        stage('build') {
-            steps {
-                sh 'mvn --version'
-            }
-        }
+node {
+    stage 'Checkout'
+
+    checkout scm
+
+    stage 'Gradle Static Analysis'
+    withSonarQubeEnv {
+        sh "./gradlew clean sonarqube"
     }
-}
+}    
